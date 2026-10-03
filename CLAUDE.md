@@ -28,6 +28,8 @@ El usuario trabaja en español y prefiere ver los entregables como **página web
 263 asesores. Cumplimiento hoy 45.2% y proyectado 54.7%. Activan 76, cerca 14 y no activan 173.
 Gasto proyectado S/ 95,987 sobre una carta de S/ 248,917. Gasto con el CM cargado hoy: S/ 49,192.
 El pool con más desfase es ReiNew (8.8%).
+Escenarios: tope de CM en 120% → 46 activan y S/ 48,952; piso de PM de 60% → 49 y S/ 64,012; piso de PM de 70% → 43 y S/ 56,032.
+Auditoría del 3 oct.: los 9 pools del arreglo `POOLS` cuadran con la base.
 
 ## Funciones de la página
 Encabezado con las cuatro respuestas, avance por pool (línea de hoy a proyectado con la marca de 80%), activación, gasto, desfase, propuesta de escenarios (tope de CM en 120% y piso de PM de 60% o 70%), detalle por asesor y supuestos.
@@ -40,7 +42,9 @@ El **factor de proyección PM** (por ejemplo, 1.2) recalcula la tabla de detalle
 - Validar con dirección:
   - Lima Sur no tiene TARGET ni % cuota.
   - ReiNew no tiene ventas MOD B.
-  - La columna TOTAL VENTA de la base no cuadra con el detalle semanal.
+  - La columna TOTAL VENTA de la base no cuadra con el detalle semanal (123 de 263 filas; ninguna combinación de columnas la reproduce).
+  - Lima Sur tampoco tiene HC ni PESO PM/CM (se usa 0.7/0.3).
+  - Dos asesores de Counter (70682386-2 y 70525424-4) tienen CARTA distinta de TARGET × % cuota y un HC que no es el promedio de Vac.
 - Quitar la etiqueta "Borrador para revisión" cuando el usuario apruebe.
 
 ## Recordarle al usuario (sitio en pausa, retomarlo cuando el informe esté cuadrado)
