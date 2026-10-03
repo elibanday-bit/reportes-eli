@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Planificación Comercial · Iniciar sesión</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="login">
+  <aside class="side">
+    <div class="brand"><span class="logo"></span><span class="team">Planificación Comercial</span></div>
+    <h1>Reportes de ventas y comisiones</h1>
+    <p>Estatus por pool, proyecciones y gasto en comisiones, en un solo lugar.</p>
+    <small>Acceso restringido. Los reportes están cifrados y solo se abren con un usuario autorizado.</small>
+  </aside>
+  <main>
+    <form class="card" id="f" autocomplete="on" novalidate>
+      <h2>Iniciar sesión</h2>
+      <p class="sub">Ingresa con tu usuario y contraseña.</p>
+      <div class="err" id="err" role="alert"></div>
+      <label class="field">Usuario
+        <input id="u" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required autofocus>
+      </label>
+      <label class="field">Contraseña
+        <span class="pw">
+          <input id="p" name="password" type="password" autocomplete="current-password" required>
+          <button type="button" id="ver" aria-label="Mostrar contraseña">Mostrar</button>
+        </span>
+      </label>
+      <button class="btn" id="go" type="submit">Ingresar</button>
+      <p class="note">¿Olvidaste tu contraseña? Pídele a la administradora del sitio que te asigne una nueva.</p>
+    </form>
+  </main>
+</div>
+<script src="app.js"></script>
+<script>
+if (sesion.get()) location.replace("panel.html");
+const $ = id => document.getElementById(id);
+$("ver").onclick = () => {
+  const show = $("p").type === "password";
+  $("p").type = show ? "text" : "password";
+  $("ver").textContent = show ? "Ocultar" : "Mostrar";
+  $("ver").setAttribute("aria-label", show ? "Ocultar contraseña" : "Mostrar contraseña");
+};
+const error = msg => { $("err").textContent = msg; $("err").classList.toggle("show", !!msg); };
+$("f").onsubmit = async e => {
+  e.preventDefault();
+  const u = $("u").value, p = $("p").value;
+  if (!u.trim() || !p) return error("Escribe tu usuario y contraseña.");
+  error(""); $("go").disabled = true; $("go").textContent = "Verificando…";
+  try {
+    const r = await login(u, p);
+    if (!r) { error("Usuario o contraseña incorrectos."); $("p").select(); return; }
+    sesion.set(r.k, r.nombre);
+    location.replace("panel.html");
+  } catch (err) {
+    error(window.crypto?.subtle ? "No se pudo conectar. Intenta de nuevo." : "Abre el sitio con https para poder ingresar.");
+  } finally { $("go").disabled = false; $("go").textContent = "Ingresar"; }
+};
+</script>
+</body>
+</html>

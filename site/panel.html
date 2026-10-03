@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Planificación Comercial · Mis reportes</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top"><div class="in">
+  <div class="brand"><span class="logo"></span><span class="team">Planificación Comercial</span></div>
+  <span class="who" id="who"></span>
+  <button class="ghost" type="button" onclick="salir()">Cerrar sesión</button>
+</div></header>
+<div class="wrap">
+  <p class="hello" id="hello">Hola</p>
+  <h1>Mis reportes</h1>
+  <div class="stats" id="stats"></div>
+  <div class="grid" id="grid"><p class="empty">Cargando reportes…</p></div>
+</div>
+<script src="app.js"></script>
+<script>
+(async () => {
+  const { key, nombre } = await requerirSesion();
+  document.getElementById("hello").textContent = nombre ? `Hola, ${nombre}` : "Hola";
+  document.getElementById("who").textContent = nombre;
+  let reps;
+  try { reps = await getManifest(key); }
+  catch { return salir(); }  // la llave ya no sirve (se volvió a publicar el sitio): pedir login de nuevo
+  reps.sort((a, b) => (b.actualizado || "").localeCompare(a.actualizado || ""));
+  const borradores = reps.filter(r => /borrador/i.test(r.estado)).length;
+  document.getElementById("stats").innerHTML =
+    `<div><b>${reps.length}</b><span>${reps.length === 1 ? "reporte" : "reportes"}</span></div>` +
+    `<div><b>${reps.length - borradores}</b><span>aprobados</span></div>` +
+    `<div><b>${borradores}</b><span>en borrador</span></div>` +
+    (reps[0] ? `<div><b>${esc(fecha(reps[0].actualizado))}</b><span>última actualización</span></div>` : "");
+  const tagCls = e => /borrador/i.test(e) ? "warn" : /aprobado|final/i.test(e) ? "ok" : "";
+  document.getElementById("grid").innerHTML = reps.length ? reps.map(r => `
+    <a class="rep" href="ver.html#${encodeURIComponent(r.token)}">
+      <div class="meta">${r.estado ? `<span class="tag ${tagCls(r.estado)}">${esc(r.estado)}</span>` : ""}${r.periodo ? `<span class="tag">${esc(r.periodo)}</span>` : ""}</div>
+      <h3>${esc(r.titulo)}</h3>
+      <p>${esc(r.descripcion)}</p>
+      <div class="foot"><span>Actualizado ${esc(fecha(r.actualizado))}</span><strong>Abrir →</strong></div>
+    </a>`).join("") : `<p class="empty">Todavía no hay reportes publicados.</p>`;
+})();
+</script>
+</body>
+</html>

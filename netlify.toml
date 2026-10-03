@@ -1,0 +1,4 @@
+# Netlify: publica la carpeta site/ tal cual (ya viene generada y cifrada).
+[build]
+  publish = "site"
+  command = ""

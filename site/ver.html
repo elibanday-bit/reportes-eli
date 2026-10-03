@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Planificación Comercial · Reporte</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="viewer">
+  <header class="top"><div class="in">
+    <a class="ghost" href="panel.html">← Mis reportes</a>
+    <span class="title" id="title"></span>
+    <span class="who" id="who"></span>
+    <button class="ghost" type="button" onclick="salir()">Cerrar sesión</button>
+  </div></header>
+  <div class="loading" id="loading">Abriendo reporte…</div>
+</div>
+<script src="app.js"></script>
+<script>
+(async () => {
+  const { key, nombre } = await requerirSesion();
+  document.getElementById("who").textContent = nombre;
+  const token = decodeURIComponent(location.hash.slice(1));
+  const loading = document.getElementById("loading");
+  try {
+    const rep = (await getManifest(key)).find(r => r.token === token);
+    if (!rep) { loading.textContent = "Este reporte ya no está disponible. Vuelve a Mis reportes."; return; }
+    document.getElementById("title").textContent = rep.titulo;
+    document.title = `${rep.titulo} · Planificación Comercial`;
+    const blob = await (await fetch(`r/${token}.json`, { cache: "no-store" })).json();
+    const frame = document.createElement("iframe");
+    frame.title = rep.titulo;
+    frame.srcdoc = dec.decode(await abrir(key, blob));
+    loading.replaceWith(frame);
+  } catch { salir(); }
+})();
+</script>
+</body>
+</html>

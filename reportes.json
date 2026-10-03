@@ -1,0 +1,11 @@
+[
+  {
+    "id": "comisiones-s37-s40",
+    "titulo": "Estatus de comisiones S37–S40",
+    "descripcion": "Avance por pool, proyección de cumplimiento, asesores que activan comisión y gasto proyectado.",
+    "periodo": "S37–S40",
+    "archivo": "output/estatus-comisiones-s37-s40.html",
+    "estado": "Borrador",
+    "actualizado": "2026-10-03"
+  }
+]
