@@ -11,7 +11,7 @@ Para usar una base nueva, reemplaza `data/ANALISIS_ESTADO-PROYECCION.xlsx` o pas
 
 El resultado se guarda en `output/estatus-comisiones-s37-s40.html`. Ábrelo en el navegador.
 
-## Sitio con inicio de sesión (Planificación Comercial)
+## Sitio con inicio de sesión (Soporte Variables)
 
 El sitio publicable está en `site/`: inicio de sesión, panel "Mis reportes" y visor. Los reportes van cifrados (AES-GCM) y solo se abren en el navegador con un usuario válido.
 

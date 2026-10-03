@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Planificación Comercial · Reporte</title>
+<title>Soporte Variables · Reporte</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
 <link rel="stylesheet" href="app.css">
 </head>
@@ -29,7 +29,7 @@
     const rep = (await getManifest(key)).find(r => r.token === token);
     if (!rep) { loading.textContent = "Este reporte ya no está disponible. Vuelve a Mis reportes."; return; }
     document.getElementById("title").textContent = rep.titulo;
-    document.title = `${rep.titulo} · Planificación Comercial`;
+    document.title = `${rep.titulo} · Soporte Variables`;
     const blob = await (await fetch(`r/${token}.json`, { cache: "no-store" })).json();
     const frame = document.createElement("iframe");
     frame.title = rep.titulo;

@@ -11,7 +11,7 @@ El usuario trabaja en español y prefiere ver los entregables como **página web
 - `scripts/build_excel.py`: genera el modelo Excel con fórmulas, como respaldo.
 - `web/template.html`: plantilla de la página. El marcador `__DATA__` se reemplaza con el detalle por asesor.
 - `output/`: entregables generados.
-- `scripts/build_site.py` + `web/sitio/`: sitio publicable del equipo **Planificación Comercial** (logo Laureate). Login con usuario y contraseña, panel "Mis reportes" y visor. Los reportes de `reportes.json` se cifran con una llave maestra, y cada usuario de `config/usuarios.json` (fuera del repo) la abre con su contraseña (PBKDF2 600k + AES-GCM). Salida: `site/`.
+- `scripts/build_site.py` + `web/sitio/`: sitio publicable del equipo **Soporte Variables** (logo Laureate). Login con usuario y contraseña, panel "Mis reportes" y visor. Los reportes de `reportes.json` se cifran con una llave maestra, y cada usuario de `config/usuarios.json` (fuera del repo) la abre con su contraseña (PBKDF2 600k + AES-GCM). Salida: `site/`.
 
 ## Reglas de cálculo (validadas con el usuario)
 - **PM** = UG + WA + CAD + RN de S37 a S40, contra `META PM TOTAL`.
@@ -35,8 +35,6 @@ El detalle por asesor se puede filtrar por pool, estado y código o líder, y or
 El **factor de proyección PM** (por ejemplo, 1.2) recalcula la tabla de detalle y muestra el resultado total frente a la base.
 
 ## Pendientes
-- Cambiar el logo provisional (SVG en `web/sitio/app.js`) por el archivo original de Laureate.
-- Pasar el repo a privado: hoy es público y contiene la base y el reporte sin cifrar.
 - Los bloques por pool, los escenarios y el encabezado están escritos a mano en `web/template.html` (arreglo `POOLS` y textos). Hay que volverlos dinámicos, calculados desde los datos, para que se actualicen con cada base nueva.
 - Que el factor de proyección PM recalcule toda la página, no solo el detalle.
 - Validar con dirección:
@@ -44,3 +42,11 @@ El **factor de proyección PM** (por ejemplo, 1.2) recalcula la tabla de detalle
   - ReiNew no tiene ventas MOD B.
   - La columna TOTAL VENTA de la base no cuadra con el detalle semanal.
 - Quitar la etiqueta "Borrador para revisión" cuando el usuario apruebe.
+
+## Recordarle al usuario (sitio en pausa, retomarlo cuando el informe esté cuadrado)
+El sitio de login está terminado y en pausa por decisión del usuario. Primero se cuadra el informe. Al cerrar el trabajo del informe, recordarle:
+- **Pasar el repo a privado** (hoy es público y contiene la base y el reporte sin cifrar). Es lo más urgente.
+- Guardar las contraseñas de `config/usuarios.json` (usuarios `eli` y `jefe`) fuera del contenedor.
+- Cambiar el logo provisional (SVG en `web/sitio/app.js`) por el archivo original de Laureate.
+- Publicar `site/` en Netlify o Cloudflare Pages (https).
+- Volver a correr `python scripts/build_site.py` después de cada cambio del informe para que el sitio lleve la versión nueva.
