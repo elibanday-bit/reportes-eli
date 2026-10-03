@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Estatus de comisiones S37–S40 · Borrador</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
+<style>
+:root{
+  --bg:#F3F5F8; --paper:#FFFFFF; --ink:#13263D; --text:#1D2733; --muted:#5B6676; --rule:#D8DEE6; --track:#E5EAF0;
+  --ok:#0E7C63; --ok-soft:#D4EEE6; --warn:#B47A0C; --warn-bar:#D9A23A; --warn-soft:#FBEFD6; --bad:#AE3D2D; --bad-soft:#F6DEDA; --neutral:#B9C2CD;
+  --head:#13263D; --head-text:#F3F5F8;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1622; --paper:#152131; --ink:#E8EDF3; --text:#D9E0E8; --muted:#95A2B3; --rule:#2A3A4F; --track:#223247;
+    --ok:#3FBF98; --ok-soft:#173A31; --warn:#E3B04F; --warn-bar:#C9922A; --warn-soft:#3A2F17; --bad:#E07A68; --bad-soft:#3D221E; --neutral:#4A5A6E;
+    --head:#0A111B; --head-text:#E8EDF3;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1622; --paper:#152131; --ink:#E8EDF3; --text:#D9E0E8; --muted:#95A2B3; --rule:#2A3A4F; --track:#223247;
+  --ok:#3FBF98; --ok-soft:#173A31; --warn:#E3B04F; --warn-bar:#C9922A; --warn-soft:#3A2F17; --bad:#E07A68; --bad-soft:#3D221E; --neutral:#4A5A6E;
+  --head:#0A111B; --head-text:#E8EDF3;
+}
+:root{box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0; background:var(--bg); color:var(--text); font-family:'Archivo', 'Helvetica Neue', Arial, sans-serif; font-size:16px; line-height:1.5; font-variant-numeric:tabular-nums}
+.wrap{max-width:1160px; margin:0 auto; padding:0 24px}
+h1,h2,h3{color:var(--ink); font-stretch:82%; margin:0; line-height:1.1}
+h1{font-size:clamp(34px,5vw,56px); font-weight:750; letter-spacing:-0.5px; max-width:20ch}
+h2{font-size:clamp(26px,3.2vw,36px); font-weight:700; max-width:30ch}
+h3{font-size:20px; font-weight:700}
+p{margin:0}
+.lede{color:var(--muted); max-width:62ch; margin-top:10px}
+
+/* encabezado */
+header{background:var(--head); color:var(--head-text); padding:40px 0 0}
+header h1{color:var(--head-text)}
+.draft{display:inline-block; background:var(--warn-bar); color:#1D1503; font-weight:700; font-size:13px; padding:3px 10px; border-radius:3px; margin-bottom:18px}
+.period{color:#9FB0C5; margin-top:12px; max-width:60ch}
+.answers{display:grid; grid-template-columns:repeat(4,1fr); margin-top:36px; border-top:1px solid #2D4360}
+.answers > div{padding:22px 22px 28px 0; border-right:1px solid #2D4360}
+.answers > div + div{padding-left:22px}
+.answers > div:last-child{border-right:none}
+.q{color:#9FB0C5; font-size:15px}
+.a{font-size:clamp(32px,4vw,46px); font-weight:750; font-stretch:78%; line-height:1.05; margin:6px 0 8px; color:#FFFFFF}
+.a.ok{color:#5FD3AE} .a.bad{color:#F08E7C}
+.ctx{font-size:14.5px; color:#C9D3DF; line-height:1.45}
+
+nav.toc{position:sticky; top:0; z-index:5; background:var(--paper); border-bottom:1px solid var(--rule)}
+nav.toc .wrap{display:flex; gap:4px; overflow-x:auto; padding-top:8px; padding-bottom:8px}
+nav.toc a{color:var(--muted); text-decoration:none; font-size:14.5px; padding:6px 12px; border-radius:4px; white-space:nowrap}
+nav.toc a:hover,nav.toc a:focus-visible{background:var(--track); color:var(--ink); outline:none}
+
+section.block{padding:56px 0 8px}
+.panel{background:var(--paper); border:1px solid var(--rule); border-radius:6px; padding:28px; margin-top:24px}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:24px}
+
+/* gráfico de umbral */
+.legend{display:flex; flex-wrap:wrap; gap:18px; color:var(--muted); font-size:14px; margin-bottom:18px}
+.legend i{display:inline-block; width:12px; height:12px; border-radius:50%; vertical-align:-1px; margin-right:6px}
+.dumb{display:grid; grid-template-columns:170px 1fr 150px; align-items:center; gap:16px; padding:9px 0; border-bottom:1px solid var(--rule)}
+.dumb:last-child{border-bottom:none}
+.dumb .name{font-weight:600; color:var(--ink)}
+.dtrack{position:relative; height:28px}
+.dtrack::before{content:""; position:absolute; left:0; right:0; top:13px; height:2px; background:var(--track)}
+.thr{position:absolute; top:-6px; bottom:-6px; width:2px; background:var(--ink); opacity:.7}
+.seg{position:absolute; top:12px; height:4px; border-radius:2px}
+.dot{position:absolute; top:7px; width:16px; height:16px; border-radius:50%; transform:translateX(-50%); border:2px solid var(--paper)}
+.dot.now{background:var(--neutral)}
+.vals{font-size:15px; color:var(--muted)} .vals b{color:var(--ink); font-size:17px}
+.axis{display:grid; grid-template-columns:170px 1fr 150px; gap:16px; margin-top:6px}
+.axis .ticks{position:relative; height:18px; font-size:12.5px; color:var(--muted)}
+.axis .ticks span{position:absolute; transform:translateX(-50%)}
+.callout{margin-top:20px; padding:14px 18px; background:var(--bg); border-left:3px solid var(--ink); color:var(--text); max-width:80ch}
+
+/* barras apiladas */
+.stack-row{display:grid; grid-template-columns:150px 1fr 110px; gap:14px; align-items:center; padding:6px 0}
+.stack{display:flex; height:22px; border-radius:3px; overflow:hidden; background:var(--track)}
+.stack span{display:block; height:100%}
+.s-ok{background:var(--ok)} .s-warn{background:var(--warn-bar)} .s-no{background:var(--neutral)}
+.small{font-size:14px; color:var(--muted)}
+.split{display:flex; height:14px; border-radius:3px; overflow:hidden; margin:14px 0 10px}
+.big{font-size:44px; font-weight:750; font-stretch:78%; color:var(--ink); line-height:1}
+
+table{width:100%; border-collapse:collapse; font-size:15px}
+th{text-align:left; font-weight:600; color:var(--muted); font-size:13.5px; padding:8px 10px; border-bottom:2px solid var(--ink)}
+td{padding:9px 10px; border-bottom:1px solid var(--rule)}
+td.n,th.n{text-align:right}
+tr.total td{font-weight:700; border-top:2px solid var(--ink); border-bottom:none}
+.tag{display:inline-block; font-size:12.5px; font-weight:600; padding:2px 8px; border-radius:3px}
+.t-ok{background:var(--ok-soft); color:var(--ok)} .t-warn{background:var(--warn-soft); color:var(--warn)} .t-no{background:var(--bad-soft); color:var(--bad)}
+.pos{color:var(--ok)} .neg{color:var(--bad)}
+.scroll{overflow-x:auto}
+
+/* gasto */
+.hbar{display:grid; grid-template-columns:150px 1fr 90px; gap:12px; align-items:center; padding:5px 0}
+.hbar .b{height:18px; background:var(--ink); border-radius:2px}
+.range{position:relative; height:46px; margin:26px 0 8px}
+.range .line{position:absolute; top:20px; left:0; right:0; height:6px; background:var(--track); border-radius:3px}
+.range .fill{position:absolute; top:20px; height:6px; background:var(--ink); border-radius:3px}
+.range .pt{position:absolute; top:0; transform:translateX(-50%); font-size:13px; color:var(--muted); white-space:nowrap}
+
+/* escenarios */
+.scen td:first-child{font-weight:600; color:var(--ink)}
+.scen .meter{height:8px; background:var(--track); border-radius:4px; min-width:120px}
+.scen .meter span{display:block; height:100%; background:var(--ink); border-radius:4px}
+
+/* detalle */
+.filters{display:flex; flex-wrap:wrap; gap:12px; align-items:end; margin-bottom:16px}
+.filters label{display:flex; flex-direction:column; gap:4px; font-size:13.5px; color:var(--muted)}
+select,input{font:inherit; font-size:15px; color:var(--text); background:var(--paper); border:1px solid var(--rule); border-radius:4px; padding:8px 10px; min-width:170px}
+select:focus-visible,input:focus-visible,button:focus-visible,th button:focus-visible{outline:2px solid var(--ok); outline-offset:1px}
+.factor{display:flex; align-items:stretch}
+.factor input{min-width:0; width:84px; text-align:center; border-radius:0; border-left:none; border-right:none; font-weight:700; color:var(--ink)}
+.factor button{font:inherit; font-size:18px; width:38px; background:var(--track); color:var(--ink); border:1px solid var(--rule); cursor:pointer}
+.factor button:first-child{border-radius:4px 0 0 4px} .factor button:last-child{border-radius:0 4px 4px 0}
+.factor button:hover{background:var(--rule)}
+.facnote{font-size:14.5px; color:var(--muted); margin:-4px 0 14px; max-width:90ch}
+.facnote b{color:var(--ink)}
+.facnote.on{background:var(--warn-soft); color:var(--text); padding:10px 14px; border-radius:4px; margin-top:0}
+.summary{margin-left:auto; font-size:14.5px; color:var(--muted); text-align:right}
+.summary b{color:var(--ink)}
+th button{all:unset; cursor:pointer; color:inherit; font:inherit}
+th button[aria-sort]::after{content:" ↕"; opacity:.4}
+th button[aria-sort="ascending"]::after{content:" ↑"; opacity:1}
+th button[aria-sort="descending"]::after{content:" ↓"; opacity:1}
+.tablebox{max-height:560px; overflow:auto; border:1px solid var(--rule); border-radius:4px}
+.tablebox th{position:sticky; top:0; background:var(--paper)}
+.mini{display:inline-block; width:60px; height:6px; background:var(--track); border-radius:3px; vertical-align:middle; margin-right:8px; position:relative; overflow:hidden}
+.mini span{position:absolute; left:0; top:0; bottom:0}
+
+ul.clean{margin:12px 0 0; padding-left:20px} ul.clean li{margin-bottom:8px; max-width:70ch}
+footer{color:var(--muted); font-size:13.5px; padding:40px 0 56px}
+
+@media (max-width:860px){
+  .answers{grid-template-columns:1fr 1fr}
+  .answers > div:nth-child(2){border-right:none}
+  .answers > div:nth-child(3){padding-left:0}
+  .answers > div:nth-child(n+3){border-top:1px solid #2D4360}
+  .grid2{grid-template-columns:1fr}
+  .dumb,.axis{grid-template-columns:110px 1fr 104px; gap:10px}
+  .stack-row{grid-template-columns:110px 1fr 84px}
+  .hbar{grid-template-columns:120px 1fr 74px}
+  .panel{padding:18px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .dot.proj,.seg{transition:left .6s ease, width .6s ease}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="draft">Borrador para revisión</span>
+    <h1>Estatus de ventas y comisiones, periodo S37–S40</h1>
+    <p class="period">263 asesores en 9 pools. Cumplimiento = 70% PM (UG, WA, CAD y RN) + 30% CM (MOD B). La comisión se activa desde 80%.</p>
+    <div class="answers">
+      <div><p class="q">¿Cuánto proyectamos?</p><p class="a">54.7%</p><p class="ctx">de cumplimiento al cierre. Hoy vamos en 45.2%.</p></div>
+      <div><p class="q">¿Quiénes activan comisión?</p><p class="a ok">76 de 263</p><p class="ctx">29% de la dotación. Otros 14 están entre 70% y 80%.</p></div>
+      <div><p class="q">¿Cuánto gastamos?</p><p class="a">S/ 95,987</p><p class="ctx">38.6% de la carta de S/ 248,917.</p></div>
+      <div><p class="q">¿Qué pool tiene más desfase?</p><p class="a bad">ReiNew</p><p class="ctx">8.8% de cumplimiento y sin ventas CM.</p></div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Secciones">
+  <div class="wrap">
+    <a href="#avance">Avance por pool</a>
+    <a href="#activacion">Activación</a>
+    <a href="#gasto">Gasto</a>
+    <a href="#desfase">Desfase</a>
+    <a href="#propuesta">Propuesta</a>
+    <a href="#detalle">Detalle por asesor</a>
+    <a href="#supuestos">Supuestos</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section class="block" id="avance">
+  <h2>Solo Chattigo e Inbound Premium cruzan el umbral de activación</h2>
+  <p class="lede">Cada línea va del cumplimiento de hoy al proyectado al cierre. El salto viene del CM: MOD B tiene S39 cargado en parte y S40 sin dato.</p>
+  <div class="panel">
+    <div class="legend">
+      <span><i style="background:var(--neutral)"></i>Hoy</span>
+      <span><i style="background:var(--ok)"></i>Proyectado, 80% o más</span>
+      <span><i style="background:var(--warn-bar)"></i>Proyectado, 60% a 80%</span>
+      <span><i style="background:var(--bad)"></i>Proyectado, menos de 60%</span>
+      <span><i style="background:var(--ink); border-radius:0; width:3px"></i>Umbral de 80%</span>
+    </div>
+    <div id="dumbbell"></div>
+    <div class="axis"><div></div><div class="ticks" id="ticks"></div><div></div></div>
+    <p class="callout">Los dos pools sobre el umbral lo logran por el CM (más de 180%), con un PM bajo 50%. Counter tiene el mejor PM (76%), pero su CM está en 38%.</p>
+  </div>
+  <div class="panel scroll">
+    <table>
+      <thead><tr><th>Pool</th><th class="n">Dotación</th><th class="n">% PM</th><th class="n">% CM proy.</th><th class="n">Cumpl. hoy</th><th class="n">Cumpl. proy.</th><th class="n">Activan</th><th class="n">Gasto proy. (S/)</th></tr></thead>
+      <tbody id="pooltable"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="block" id="activacion">
+  <h2>76 asesores activan comisión y 14 están a menos de 10 puntos</h2>
+  <div class="grid2">
+    <div class="panel">
+      <h3>Toda la dotación</h3>
+      <div class="split"><span class="s-ok" style="width:28.9%"></span><span class="s-warn" style="width:5.3%"></span><span class="s-no" style="width:65.8%"></span></div>
+      <table>
+        <tbody>
+          <tr><td><span class="tag t-ok">Activan</span></td><td>80% o más</td><td class="n"><b>76</b></td><td class="n">29%</td></tr>
+          <tr><td><span class="tag t-warn">Cerca</span></td><td>70% a 80%</td><td class="n"><b>14</b></td><td class="n">5%</td></tr>
+          <tr><td><span class="tag t-no">No activan</span></td><td>menos de 70%</td><td class="n"><b>173</b></td><td class="n">66%</td></tr>
+        </tbody>
+      </table>
+      <h3 style="margin-top:28px">Por nivel alcanzado</h3>
+      <table style="margin-top:8px">
+        <thead><tr><th>Nivel</th><th class="n">Umbral</th><th class="n">Acelerador</th><th class="n">Asesores</th><th class="n">Gasto (S/)</th></tr></thead>
+        <tbody>
+          <tr><td>N6</td><td class="n">130%</td><td class="n">2.0x</td><td class="n">18</td><td class="n">38,782</td></tr>
+          <tr><td>N5</td><td class="n">120%</td><td class="n">1.5x</td><td class="n">14</td><td class="n">22,460</td></tr>
+          <tr><td>N4</td><td class="n">110%</td><td class="n">1.3x</td><td class="n">5</td><td class="n">7,020</td></tr>
+          <tr><td>N3</td><td class="n">100%</td><td class="n">1.0x</td><td class="n">10</td><td class="n">9,545</td></tr>
+          <tr><td>N2</td><td class="n">90%</td><td class="n">0.9x</td><td class="n">15</td><td class="n">14,040</td></tr>
+          <tr><td>N1</td><td class="n">80%</td><td class="n">0.3x</td><td class="n">14</td><td class="n">4,140</td></tr>
+          <tr class="total"><td>Total</td><td></td><td></td><td class="n">76</td><td class="n">95,987</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="panel">
+      <h3>Por pool</h3>
+      <p class="small" style="margin:4px 0 14px">El largo de cada barra es la dotación del pool.</p>
+      <div class="legend">
+        <span><i class="s-ok"></i>Activan</span><span><i class="s-warn"></i>Cerca</span><span><i class="s-no"></i>No activan</span>
+      </div>
+      <div id="stacks"></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="gasto">
+  <h2>El gasto proyectado es S/ 95,987, y 64% se concentra en N5 y N6</h2>
+  <div class="grid2">
+    <div class="panel">
+      <h3>Rango de gasto según la carga de CM</h3>
+      <p class="small" style="margin-top:4px">Sobre la carta total de S/ 248,917</p>
+      <div class="range">
+        <div class="line"></div>
+        <div class="fill" style="left:19.8%; width:18.8%"></div>
+        <span class="pt" style="left:19.8%">Hoy S/ 49,192</span>
+        <span class="pt" style="left:38.6%; top:30px">Proyectado S/ 95,987</span>
+      </div>
+      <p style="margin-top:22px; max-width:56ch">La diferencia de S/ 46,795 depende de que MOD B mantenga en S39 y S40 el ritmo de S37 y S38. De ese dato dependen 32 de las 76 activaciones.</p>
+      <p style="margin-top:14px; max-width:56ch">N5 y N6 suman 32 asesores y S/ 61,242.</p>
+    </div>
+    <div class="panel">
+      <h3>Gasto proyectado por pool (S/)</h3>
+      <div id="spend" style="margin-top:14px"></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="desfase">
+  <h2>ReiNew tiene el mayor desfase: le faltan 332 ventas PM y no tiene CM</h2>
+  <p class="lede">En unidades, la brecha estructural es el PM: faltan 1,523 ventas, 55% de la meta. El CM está desigual, con tres pools que lo sobrecumplen y seis por debajo de 40%.</p>
+  <div class="panel scroll">
+    <table>
+      <thead><tr><th>Pool</th><th class="n">Meta PM</th><th class="n">Venta PM</th><th class="n">Faltan PM</th><th class="n">Meta CM</th><th class="n">CM proy.</th><th class="n">Brecha CM</th><th>Lectura</th></tr></thead>
+      <tbody id="gaptable"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="block" id="propuesta">
+  <h2>Propuesta: 36 de los 76 que activan no llegan a 80% en PM</h2>
+  <p class="lede">El CM no tiene tope y algunos asesores pasan de 500% en MOD B. Con su 30% de peso, eso los lleva a N5 o N6 aunque su venta principal esté baja. 24 asesores activan con PM bajo 50% y suman S/ 28,855.</p>
+  <div class="panel scroll">
+    <table class="scen">
+      <thead><tr><th>Escenario</th><th class="n">Activan</th><th class="n">Gasto (S/)</th><th class="n">Diferencia (S/)</th><th>Gasto relativo</th></tr></thead>
+      <tbody>
+        <tr><td>Esquema actual</td><td class="n">76</td><td class="n">95,987</td><td class="n">—</td><td><div class="meter"><span style="width:100%"></span></div></td></tr>
+        <tr><td>Tope de CM en 120%</td><td class="n">45</td><td class="n">48,952</td><td class="n pos">−47,035</td><td><div class="meter"><span style="width:51%"></span></div></td></tr>
+        <tr><td>Piso de PM de 60%</td><td class="n">49</td><td class="n">64,012</td><td class="n pos">−31,975</td><td><div class="meter"><span style="width:66.7%"></span></div></td></tr>
+        <tr><td>Piso de PM de 70%</td><td class="n">43</td><td class="n">56,032</td><td class="n pos">−39,955</td><td><div class="meter"><span style="width:58.4%"></span></div></td></tr>
+      </tbody>
+    </table>
+    <p class="small" style="margin-top:14px">Simulado sobre la proyección actual, sin cambiar metas ni aceleradores. Con piso de PM, quien quede bajo el piso no cobra. Son opciones para evaluar en un próximo periodo.</p>
+  </div>
+</section>
+
+<section class="block" id="detalle">
+  <h2>Detalle por asesor</h2>
+  <p class="lede">Filtra por pool o estado para ver quiénes activan, quiénes están cerca y cuánto aporta cada uno al gasto.</p>
+  <div class="panel">
+    <div class="filters">
+      <label>Pool<select id="fPool"><option value="">Todos</option></select></label>
+      <label>Estado<select id="fEst"><option value="">Todos</option><option>Activa</option><option>Cerca</option><option>No activa</option></select></label>
+      <label>Buscar código o líder<input id="fTxt" type="search" placeholder="Ej. 4605 o Tarazona"></label>
+      <label>Factor de proyección PM<span class="factor"><button type="button" id="fMinus" aria-label="Bajar factor">−</button><input id="fFac" type="number" min="0.5" max="3" step="0.05" value="1" inputmode="decimal"><button type="button" id="fPlus" aria-label="Subir factor">+</button></span></label>
+      <p class="summary" id="summary" aria-live="polite"></p>
+    </div>
+    <p class="facnote" id="facnote" aria-live="polite"></p>
+    <div class="tablebox">
+      <table id="det">
+        <thead><tr>
+          <th><button data-k="0">Código</button></th>
+          <th><button data-k="1">Pool</button></th>
+          <th><button data-k="2">Líder de grupo</button></th>
+          <th class="n"><button data-k="6">% PM</button></th>
+          <th class="n"><button data-k="7">% CM proy.</button></th>
+          <th class="n"><button data-k="9" aria-sort="descending">Cumpl. proy.</button></th>
+          <th><button data-k="10">Nivel</button></th>
+          <th class="n"><button data-k="11">Gasto (S/)</button></th>
+          <th><button data-k="12">Estado</button></th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="supuestos">
+  <h2>Supuestos y pendientes del dato</h2>
+  <div class="grid2">
+    <div class="panel">
+      <h3>Cómo se calculó</h3>
+      <ul class="clean">
+        <li>Periodo S37–S40, que son las semanas que cubren las columnas de vacaciones y el HC.</li>
+        <li>UG, WA, CAD y RN se toman como cerrados a S40.</li>
+        <li>MOD B de S39 y S40 se proyecta con el ritmo de S37–S38 por semana activa, ajustado por la disponibilidad de cada semana. Si el dato real es mayor, se usa el real.</li>
+        <li>Gasto = carta (target × % cuota) × acelerador del nivel alcanzado.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Por validar con dirección</h3>
+      <ul class="clean">
+        <li>Lima Sur no tiene TARGET ni % cuota cargados. 6 asesores alcanzan nivel; si se les paga carta completa, la exposición llega a S/ 7,200.</li>
+        <li>ReiNew no registra ventas MOD B. Hay que confirmar si su CM se mide con otra fuente.</li>
+        <li>La columna TOTAL VENTA de la base no cuadra con el detalle semanal, así que se recalculó desde el detalle.</li>
+        <li>Plan de empuje para los 14 asesores que están entre 70% y 80%.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer><div class="wrap">Borrador elaborado con la base de ventas S37–S40 y la tabla de niveles y aceleradores. Cifras en soles.</div></footer>
+
+<script>
+const POOLS=[
+ // nombre, dotación, %PM, %CM proy, hoy, proy, activan, cerca, no, gasto, metaPM, ventaPM, metaCM, cmProy, lectura
+ ["Chattigo",18,.497,1.856,.668,.904,11,2,5,12942,459,228,164,304,"CM compensa un PM de 50%"],
+ ["Inbound Premium",44,.476,1.800,.649,.873,26,3,15,35015,622,296,212,382,"CM compensa un PM de 48%"],
+ ["Counter",34,.758,.376,.599,.644,8,2,24,13470,451,342,194,73,"Mejor PM (76%), CM en 38%"],
+ ["Inbound Regular",27,.269,1.144,.406,.531,5,1,21,5460,227,61,95,109,"PM en 27%"],
+ ["Lima Sur",28,.650,.091,.469,.482,6,4,18,0,160,104,209,19,"CM en 9%; sin target cargado"],
+ ["Outbound Regular",41,.190,1.105,.322,.464,13,1,27,15540,174,33,81,90,"PM en 19%"],
+ ["Outbound Premium",38,.512,.248,.397,.433,5,1,32,9960,250,128,109,27,"Brecha en PM y en CM"],
+ ["Ate",13,.429,.140,.324,.342,2,0,11,3600,70,30,86,12,"Brecha en PM y en CM"],
+ ["ReiNew",20,.126,0,.088,.088,0,0,20,0,380,48,184,0,"PM en 13% y sin ventas CM"]
+];
+const pct=v=>(v*100).toFixed(1)+"%";
+const num=v=>Math.round(v).toLocaleString("en-US");
+const col=v=>v>=.8?"var(--ok)":v>=.6?"var(--warn-bar)":"var(--bad)";
+const MAX=1.0;
+const x=v=>Math.min(v,MAX)/MAX*100;
+
+// gráfico de umbral
+const db=document.getElementById("dumbbell");
+db.innerHTML=POOLS.map(p=>{
+  const a=x(p[4]), b=x(p[5]);
+  return `<div class="dumb"><span class="name">${p[0]}</span>
+   <div class="dtrack" role="img" aria-label="${p[0]}: hoy ${pct(p[4])}, proyectado ${pct(p[5])}">
+     <span class="thr" style="left:${x(.8)}%"></span>
+     <span class="seg" style="left:${a}%; width:${Math.max(b-a,0)}%; background:${col(p[5])}"></span>
+     <span class="dot now" style="left:${a}%"></span>
+     <span class="dot proj" style="left:${b}%; background:${col(p[5])}"></span>
+   </div>
+   <span class="vals"><b>${pct(p[5])}</b> · hoy ${pct(p[4])}</span></div>`;
+}).join("");
+document.getElementById("ticks").innerHTML=[0,.2,.4,.6,.8,1].map(t=>`<span style="left:${x(t)}%">${t*100}%</span>`).join("");
+
+// tabla de pools
+const T={d:0,ac:0,g:0};
+document.getElementById("pooltable").innerHTML=POOLS.map(p=>{T.d+=p[1];T.ac+=p[6];T.g+=p[9];
+  return `<tr><td>${p[0]}</td><td class="n">${p[1]}</td><td class="n">${pct(p[2])}</td><td class="n">${pct(p[3])}</td><td class="n">${pct(p[4])}</td><td class="n" style="color:${col(p[5])};font-weight:700">${pct(p[5])}</td><td class="n">${p[6]}</td><td class="n">${p[9]?num(p[9]):(p[0]==="Lima Sur"?"0*":"0")}</td></tr>`}).join("")+
+  `<tr class="total"><td>Total</td><td class="n">${T.d}</td><td class="n">45.5%</td><td class="n">76.1%</td><td class="n">45.2%</td><td class="n">54.7%</td><td class="n">${T.ac}</td><td class="n">${num(T.g)}</td></tr>`;
+
+// barras apiladas
+const maxD=Math.max(...POOLS.map(p=>p[1]));
+document.getElementById("stacks").innerHTML=[...POOLS].sort((a,b)=>b[6]-a[6]).map(p=>
+ `<div class="stack-row"><span>${p[0]}</span><div class="stack" style="width:${p[1]/maxD*100}%" role="img" aria-label="${p[0]}: ${p[6]} activan, ${p[7]} cerca, ${p[8]} no activan">
+  <span class="s-ok" style="width:${p[6]/p[1]*100}%"></span><span class="s-warn" style="width:${p[7]/p[1]*100}%"></span><span class="s-no" style="width:${p[8]/p[1]*100}%"></span></div>
+  <span class="small"><b style="color:var(--ink)">${p[6]}</b> de ${p[1]}</span></div>`).join("");
+
+// gasto por pool
+const maxG=Math.max(...POOLS.map(p=>p[9]));
+document.getElementById("spend").innerHTML=[...POOLS].sort((a,b)=>b[9]-a[9]).map(p=>
+ `<div class="hbar"><span>${p[0]}</span><div class="b" style="width:${Math.max(p[9]/maxG*100,.6)}%"></div><span class="n">${num(p[9])}${p[0]==="Lima Sur"?"*":""}</span></div>`).join("")+
+ `<p class="small" style="margin-top:10px">* Lima Sur no tiene esquema de pago cargado.</p>`;
+
+// desfase
+const sg=v=>v>0?`<span class="pos">+${num(v)}</span>`:v<0?`<span class="neg">−${num(-v)}</span>`:"0";
+document.getElementById("gaptable").innerHTML=[...POOLS].sort((a,b)=>(a[11]-a[10])-(b[11]-b[10])).map(p=>
+ `<tr><td>${p[0]}</td><td class="n">${num(p[10])}</td><td class="n">${num(p[11])}</td><td class="n" style="font-weight:700">${sg(p[11]-p[10])}</td><td class="n">${p[12]}</td><td class="n">${p[13]}</td><td class="n">${sg(p[13]-p[12])}</td><td>${p[14]}</td></tr>`).join("")+
+ `<tr class="total"><td>Total</td><td class="n">2,793</td><td class="n">1,270</td><td class="n"><span class="neg">−1,523</span></td><td class="n">1,334</td><td class="n">1,015</td><td class="n"><span class="neg">−319</span></td><td>El PM es la brecha estructural</td></tr>`;
+
+// detalle por asesor
+const A=[["46050977-2", "Counter", "Araceli Tarazona Sernaque", 1.0, 7, 21, 0.3333333333333333, 0.0, 0.2333333333333333, 0.2333333333333333, "No activa", 0.0, "No activa", 1200.0], ["77078190-1", "Counter", "Araceli Tarazona Sernaque", 1.0, 9, 21, 0.42857142857142855, 0.0, 0.3, 0.3, "No activa", 0.0, "No activa", 1200.0], ["47567126-6", "Counter", "Araceli Tarazona Sernaque", 0.5, 0, 8, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 600.0], ["41710085-2", "Counter", "Araceli Tarazona Sernaque", 0.5454545454545454, 2, 11, 0.18181818181818182, 0.6545454545454545, 0.30727272727272725, 0.3236363636363636, "No activa", 0.0, "No activa", 655.0], ["42763046-9", "Counter", "Araceli Tarazona Sernaque", 1.0, 12, 21, 0.5714285714285714, 0.5, 0.475, 0.5499999999999999, "No activa", 0.0, "No activa", 1200.0], ["41907916-8", "Counter", "Araceli Tarazona Sernaque", 1.0, 0, 15, 0.0, 0.3333333333333333, 0.049999999999999996, 0.09999999999999999, "No activa", 0.0, "No activa", 1200.0], ["46569779-8", "Counter", "Araceli Tarazona Sernaque", 0.45454545454545453, 0, 10, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 545.0], ["46349775-9", "Counter", "Araceli Tarazona Sernaque", 0.5, 5, 8, 0.625, 0.0, 0.4375, 0.4375, "No activa", 0.0, "No activa", 600.0], ["25831501-0", "Counter", "Jenny Alejandra De La Cruz Flores", 0.45454545454545453, 0, 10, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 545.0], ["45172927-1", "Counter", "Jenny Alejandra De La Cruz Flores", 1.0, 3, 17, 0.17647058823529413, 0.8, 0.24352941176470588, 0.3635294117647059, "No activa", 0.0, "No activa", 1200.0], ["70862248-1", "Counter", "Jenny Alejandra De La Cruz Flores", 0.5454545454545454, 4, 12, 0.3333333333333333, 1.8181818181818183, 0.7333333333333333, 0.7787878787878788, "No activa", 0.0, "Cerca", 655.0], ["46824537-5", "Counter", "Jenny Alejandra De La Cruz Flores", 0.5454545454545454, 0, 9, 0.0, 0.5454545454545454, 0.15, 0.1636363636363636, "No activa", 0.0, "No activa", 655.0], ["74948966-4", "Counter", "Jenny Alejandra De La Cruz Flores", 1.0, 13, 22, 0.5909090909090909, 0.75, 0.5261363636363636, 0.6386363636363637, "No activa", 0.0, "No activa", 1200.0], ["72173283-1", "Counter", "Jenny Alejandra De La Cruz Flores", 0.45454545454545453, 0, 8, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 545.0], ["08687915-3", "Counter", "Jenny Alejandra De La Cruz Flores", 1.0, 15, 17, 0.8823529411764706, 1.6666666666666667, 0.8676470588235293, 1.1176470588235294, "N4", 1560.0, "Activa", 1200.0], ["71523088-2", "Counter", "Midua Margarita Roman Mendez", 0.75, 4, 17, 0.23529411764705882, 0.42857142857142855, 0.20756302521008402, 0.2932773109243697, "No activa", 0.0, "No activa", 900.0], ["74502638-4", "Counter", "Midua Margarita Roman Mendez", 0.25, 0, 2, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 300.0], ["77036128-7", "Counter", "Midua Margarita Roman Mendez", 1.0, 9, 9, 1.0, 0.0, 0.7, 0.7, "No activa", 0.0, "Cerca", 1200.0], ["72430817-7", "Counter", "Midua Margarita Roman Mendez", 0.75, 8, 17, 0.47058823529411764, 1.0714285714285714, 0.5436974789915966, 0.6508403361344537, "No activa", 0.0, "No activa", 900.0], ["45249464-2", "Counter", "Midua Margarita Roman Mendez", 1.0, 13, 23, 0.5652173913043478, 0.5, 0.5081521739130435, 0.5456521739130434, "No activa", 0.0, "No activa", 1200.0], ["46514772-1", "Counter", "Midua Margarita Roman Mendez", 0.75, 8, 12, 0.6666666666666666, 0.3, 0.5266666666666666, 0.5566666666666666, "No activa", 0.0, "No activa", 900.0], ["10638696-5", "Counter", "Midua Margarita Roman Mendez", 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 0.0], ["75845729-5", "Counter", "Midua Margarita Roman Mendez", 0.75, 7, 12, 0.5833333333333334, 0.75, 0.48333333333333334, 0.6333333333333333, "No activa", 0.0, "No activa", 900.0], ["75845459-8", "Chattigo", "Carlos Garcia Morales", 0.75, 10, 23, 0.43478260869565216, 0.6666666666666666, 0.43768115942028984, 0.5043478260869565, "No activa", 0.0, "No activa", 900.0], ["77220806-1", "Chattigo", "Maite Peña Valle", 0.6590909090909091, 9, 20, 0.45, 1.5064935064935063, 0.48642857142857143, 0.7669480519480518, "No activa", 0.0, "Cerca", 791.0], ["71726182-3", "Chattigo", "Carlos Garcia Morales", 0.4772727272727273, 5, 14, 0.35714285714285715, 3.3600000000000003, 0.73, 1.258, "N5", 859.5, "Activa", 573.0], ["77137830-2", "Chattigo", "Carlos Garcia Morales", 1.0, 10, 30, 0.3333333333333333, 1.4, 0.5033333333333333, 0.6533333333333333, "No activa", 0.0, "No activa", 1200.0], ["73369531-1", "Chattigo", "Carlos Garcia Morales", 0.5, 1, 15, 0.06666666666666667, 1.5, 0.4966666666666666, 0.4966666666666666, "No activa", 0.0, "No activa", 600.0], ["48654783-4", "Chattigo", "Maite Peña Valle", 1.0, 16, 30, 0.5333333333333333, 1.4545454545454546, 0.6187878787878788, 0.8096969696969696, "N1", 360.0, "Activa", 1200.0], ["47522603-3", "Chattigo", "Maite Peña Valle", 1.0, 8, 30, 0.26666666666666666, 2.727272727272727, 0.623030303030303, 1.0048484848484849, "N3", 1200.0, "Activa", 1200.0], ["47308970-5", "Chattigo", "Carlos Garcia Morales", 1.0, 6, 30, 0.2, 0.5, 0.24, 0.29, "No activa", 0.0, "No activa", 1200.0], ["77051043-6", "Chattigo", "Maite Peña Valle", 0.4090909090909091, 21, 12, 1.75, 0.6666666666666666, 1.4249999999999998, 1.4249999999999998, "N6", 982.0, "Activa", 491.0], ["70876676-9", "Inbound Premium", "Christian Espejo Briceño", 1.0, 14, 16, 0.875, 3.0, 1.1124999999999998, 1.5124999999999997, "N6", 2400.0, "Activa", 1200.0], ["46360718-0", "Inbound Premium", "Christian Espejo Briceño", 0.45454545454545453, 0, 7, 0.0, 0.3333333333333333, 0.09999999999999999, 0.09999999999999999, "No activa", 0.0, "No activa", 545.0], ["72895784-6", "Inbound Premium", "Christian Espejo Briceño", 1.0, 5, 16, 0.3125, 1.0, 0.36875, 0.51875, "No activa", 0.0, "No activa", 1200.0], ["44147800-9", "Inbound Premium", "Christian Espejo Briceño", 1.0, 18, 16, 1.125, 1.6666666666666667, 1.0875, 1.2875, "N5", 1800.0, "Activa", 1200.0], ["45813684-5", "Inbound Premium", "Christian Espejo Briceño", 1.0, 15, 16, 0.9375, 0.5714285714285714, 0.7848214285714286, 0.8276785714285714, "N1", 360.0, "Activa", 1200.0], ["46591353-9", "Inbound Premium", "Christian Espejo Briceño", 1.0, 4, 16, 0.25, 3.5, 0.7749999999999999, 1.225, "N5", 1800.0, "Activa", 1200.0], ["76777694-8", "Inbound Premium", "Christian Espejo Briceño", 1.0, 11, 16, 0.6875, 2.5, 0.85625, 1.23125, "N5", 1800.0, "Activa", 1200.0], ["46642474-4", "Inbound Premium", "Christian Espejo Briceño", 1.0, 0, 16, 0.0, 2.0, 0.36, 0.6, "No activa", 0.0, "No activa", 1200.0], ["73938101-6", "Inbound Premium", "Christian Espejo Briceño", 1.0, 5, 16, 0.3125, 3.0, 0.66875, 1.11875, "N4", 1560.0, "Activa", 1200.0], ["63034996-1", "Inbound Premium", "Christian Espejo Briceño", 1.0, 7, 16, 0.4375, 2.8, 0.72625, 1.14625, "N4", 1560.0, "Activa", 1200.0], ["74494259-0", "ReiNew", "Francis Sanchez Campos", 1.0, 3, 15, 0.2, 0.0, 0.13999999999999999, 0.13999999999999999, "No activa", 0.0, "No activa", 1200.0], ["44582430-1", "ReiNew", "Francis Sanchez Campos", 1.0, 2, 15, 0.13333333333333333, 0.0, 0.09333333333333332, 0.09333333333333332, "No activa", 0.0, "No activa", 1200.0], ["72809743-0", "ReiNew", "Francis Sanchez Campos", 1.0, 0, 15, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["75282600-1", "ReiNew", "Gianfranco Zaira Briones", 1.0, 0, 15, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["76315697-0", "ReiNew", "Gianfranco Zaira Briones", 1.0, 4, 15, 0.26666666666666666, 0.0, 0.18666666666666665, 0.18666666666666665, "No activa", 0.0, "No activa", 1200.0], ["70451055-7", "Outbound Regular", "Grecia Landivar Perez", 1.0, 0, 4, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["74824216-9", "Outbound Regular", "Grecia Landivar Perez", 1.0, 0, 4, 0.0, 4.0, 0.6, 1.2, "N5", 1800.0, "Activa", 1200.0], ["77670185-3", "Outbound Regular", "Grecia Landivar Perez", 1.0, 0, 4, 0.0, 2.0, 0.44999999999999996, 0.6, "No activa", 0.0, "No activa", 1200.0], ["77147276-7", "Outbound Regular", "Grecia Landivar Perez", 1.0, 4, 4, 1.0, 0.3333333333333333, 0.7999999999999999, 0.7999999999999999, "N1", 360.0, "Activa", 1200.0], ["76036081-9", "Outbound Regular", "Greta Vargas Escobedo", 1.0, 0, 4, 0.0, 3.0, 0.44999999999999996, 0.8999999999999999, "N2", 1080.0, "Activa", 1200.0], ["75656015-3", "Outbound Regular", "Greta Vargas Escobedo", 1.0, 0, 4, 0.0, 1.0, 0.15, 0.3, "No activa", 0.0, "No activa", 1200.0], ["76378720-1", "Outbound Regular", "Greta Vargas Escobedo", 1.0, 0, 4, 0.0, 3.0, 0.44999999999999996, 0.8999999999999999, "N2", 1080.0, "Activa", 1200.0], ["77679638-2", "Outbound Regular", "Greta Vargas Escobedo", 1.0, 0, 4, 0.0, 3.0, 0.6, 0.8999999999999999, "N2", 1080.0, "Activa", 1200.0], ["73738513-8", "Outbound Premium", "Omar Aguilar Tello", 1.0, 4, 5, 0.8, 0.0, 0.5599999999999999, 0.5599999999999999, "No activa", 0.0, "No activa", 1200.0], ["76579399-3", "Outbound Premium", "Omar Aguilar Tello", 1.0, 0, 5, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["71457679-3", "Outbound Premium", "Omar Aguilar Tello", 1.0, 0, 5, 0.0, 1.0, 0.15, 0.3, "No activa", 0.0, "No activa", 1200.0], ["70701954-4", "Outbound Premium", "Omar Aguilar Tello", 1.0, 15, 5, 3.0, 0.0, 2.0999999999999996, 2.0999999999999996, "N6", 2400.0, "Activa", 1200.0], ["72325179-1", "Outbound Premium", "Omar Aguilar Tello", 1.0, 0, 5, 0.0, 0.5, 0.075, 0.15, "No activa", 0.0, "No activa", 1200.0], ["74690176-9", "Inbound Regular", "Wiliam Gomez Nicolas", 1.0, 0, 8, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["76482026-1", "Outbound Regular", "Ylber Bayona Costilla", 1.0, 0, 4, 0.0, 1.0, 0.15, 0.3, "No activa", 0.0, "No activa", 1200.0], ["76352177-5", "Outbound Regular", "Ylber Bayona Costilla", 1.0, 7, 4, 1.75, 1.0, 1.3749999999999998, 1.525, "N6", 2400.0, "Activa", 1200.0], ["74898894-2", "Outbound Regular", "Ylber Bayona Costilla", 1.0, 0, 4, 0.0, 1.0, 0.15, 0.3, "No activa", 0.0, "No activa", 1200.0], ["70644486-1", "Outbound Regular", "Ylber Bayona Costilla", 1.0, 4, 4, 1.0, 0.5, 0.85, 0.85, "N1", 360.0, "Activa", 1200.0], ["72867250-7", "Ate", "Gerardo Obregon Ruiz", 1.0, 0, 4, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["60828027-3", "Ate", "Gerardo Obregon Ruiz", 1.0, 9, 4, 2.25, 0.0, 1.575, 1.575, "N6", 2400.0, "Activa", 1200.0], ["73604946-1", "Outbound Regular", "Greta Vargas Escobedo", 1.0, 0, 4, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["46674049-2", "ReiNew", "Francis Sanchez Campos", 0.75, 3, 17, 0.17647058823529413, 0.0, 0.12352941176470589, 0.12352941176470589, "No activa", 0.0, "No activa", 900.0], ["70886611-9", "ReiNew", "Francis Sanchez Campos", 1.0, 3, 23, 0.13043478260869565, 0.0, 0.09130434782608694, 0.09130434782608694, "No activa", 0.0, "No activa", 1200.0], ["47086537-2", "ReiNew", "Francis Sanchez Campos", 0.9090909090909091, 2, 21, 0.09523809523809523, 0.0, 0.06666666666666665, 0.06666666666666665, "No activa", 0.0, "No activa", 1091.0], ["48171542-9", "ReiNew", "Francis Sanchez Campos", 1.0, 5, 23, 0.21739130434782608, 0.0, 0.15217391304347824, 0.15217391304347824, "No activa", 0.0, "No activa", 1200.0], ["47137289-2", "ReiNew", "Francis Sanchez Campos", 1.0, 1, 23, 0.043478260869565216, 0.0, 0.03043478260869565, 0.03043478260869565, "No activa", 0.0, "No activa", 1200.0], ["76379022-9", "ReiNew", "Francis Sanchez Campos", 1.0, 5, 23, 0.21739130434782608, 0.0, 0.15217391304347824, 0.15217391304347824, "No activa", 0.0, "No activa", 1200.0], ["48432407-2", "ReiNew", "Francis Sanchez Campos", 0.75, 5, 17, 0.29411764705882354, 0.0, 0.20588235294117646, 0.20588235294117646, "No activa", 0.0, "No activa", 900.0], ["44037527-3", "ReiNew", "Gianfranco Zaira Briones", 1.0, 2, 23, 0.08695652173913043, 0.0, 0.0608695652173913, 0.0608695652173913, "No activa", 0.0, "No activa", 1200.0], ["46864727-9", "ReiNew", "Gianfranco Zaira Briones", 1.0, 4, 23, 0.17391304347826086, 0.0, 0.1217391304347826, 0.1217391304347826, "No activa", 0.0, "No activa", 1200.0], ["47363155-1", "ReiNew", "Gianfranco Zaira Briones", 0.45454545454545453, 4, 10, 0.4, 0.0, 0.27999999999999997, 0.27999999999999997, "No activa", 0.0, "No activa", 545.0], ["75435664-8", "ReiNew", "Gianfranco Zaira Briones", 1.0, 3, 23, 0.13043478260869565, 0.0, 0.09130434782608694, 0.09130434782608694, "No activa", 0.0, "No activa", 1200.0], ["72353162-0", "ReiNew", "Gianfranco Zaira Briones", 0.45454545454545453, 0, 10, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 545.0], ["77134549-8", "ReiNew", "Gianfranco Zaira Briones", 1.0, 1, 23, 0.043478260869565216, 0.0, 0.03043478260869565, 0.03043478260869565, "No activa", 0.0, "No activa", 1200.0], ["43130010-4", "ReiNew", "Gianfranco Zaira Briones", 1.0, 1, 23, 0.043478260869565216, 0.0, 0.03043478260869565, 0.03043478260869565, "No activa", 0.0, "No activa", 1200.0], ["76526867-8", "ReiNew", "Gianfranco Zaira Briones", 1.0, 0, 23, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["48426447-9", "Outbound Regular", "Grecia Landivar Perez", 1.0, 3, 5, 0.6, 1.3333333333333333, 0.72, 0.82, "N1", 360.0, "Activa", 1200.0], ["71267989-7", "Outbound Regular", "Grecia Landivar Perez", 1.0, 0, 5, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["70559083-0", "Outbound Regular", "Grecia Landivar Perez", 0.4090909090909091, 0, 2, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 491.0], ["76454950-9", "Outbound Regular", "Greta Vargas Escobedo", 1.0, 0, 5, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["42171670-1", "Outbound Regular", "Greta Vargas Escobedo", 1.0, 1, 5, 0.2, 0.0, 0.13999999999999999, 0.13999999999999999, "No activa", 0.0, "No activa", 1200.0], ["76316344-5", "Outbound Regular", "Greta Vargas Escobedo", 1.0, 0, 5, 0.0, 2.0, 0.3, 0.6, "No activa", 0.0, "No activa", 1200.0], ["75011966-8", "Inbound Premium", "Jessica Castillo Palomino", 1.0, 4, 16, 0.25, 3.5, 0.7749999999999999, 1.225, "N5", 1800.0, "Activa", 1200.0], ["48206398-1", "Inbound Premium", "Jessica Castillo Palomino", 1.0, 8, 16, 0.5, 3.3333333333333335, 0.9999999999999999, 1.35, "N6", 2400.0, "Activa", 1200.0], ["45097567-8", "Inbound Premium", "Jessica Castillo Palomino", 0.75, 5, 12, 0.4166666666666667, 3.3, 1.0116666666666667, 1.2816666666666665, "N5", 1350.0, "Activa", 900.0], ["70183775-0", "Inbound Premium", "Sheyla Santiago Martel", 1.0, 9, 16, 0.5625, 0.6666666666666666, 0.49374999999999997, 0.59375, "No activa", 0.0, "No activa", 1200.0], ["70830003-4", "Inbound Premium", "Jessica Castillo Palomino", 1.0, 4, 16, 0.25, 2.0, 0.475, 0.7749999999999999, "No activa", 0.0, "Cerca", 1200.0], ["42937713-2", "Inbound Premium", "Jessica Castillo Palomino", 0.5, 7, 8, 0.875, 5.5, 2.2624999999999997, 2.2624999999999997, "N6", 1200.0, "Activa", 600.0], ["76366555-6", "Inbound Premium", "Jessica Castillo Palomino", 1.0, 20, 16, 1.25, 1.2, 1.055, 1.2349999999999999, "N5", 1800.0, "Activa", 1200.0], ["75684383-0", "Inbound Premium", "Jessica Castillo Palomino", 1.0, 0, 16, 0.0, 1.3333333333333333, 0.19999999999999998, 0.39999999999999997, "No activa", 0.0, "No activa", 1200.0], ["71741287-2", "Inbound Premium", "Jessica Castillo Palomino", 1.0, 6, 16, 0.375, 2.4, 0.6224999999999999, 0.9824999999999999, "N2", 1080.0, "Activa", 1200.0], ["76761426-3", "Inbound Premium", "Jessica Castillo Palomino", 1.0, 5, 16, 0.3125, 2.6666666666666665, 0.66875, 1.0187499999999998, "N3", 1200.0, "Activa", 1200.0], ["46971051-9", "Chattigo", "Carlos Garcia Morales", 1.0, 40, 30, 1.3333333333333333, 2.888888888888889, 1.3666666666666665, 1.7999999999999998, "N6", 2400.0, "Activa", 1200.0], ["71283999-1", "Chattigo", "Carlos Garcia Morales", 1.0, 10, 30, 0.3333333333333333, 1.6363636363636365, 0.47878787878787876, 0.7242424242424242, "No activa", 0.0, "Cerca", 1200.0], ["72804983-4", "Chattigo", "Maite Peña Valle", 1.0, 4, 30, 0.13333333333333333, 2.5454545454545454, 0.5024242424242424, 0.8569696969696969, "N1", 360.0, "Activa", 1200.0], ["70076606-9", "Chattigo", "Maite Peña Valle", 1.0, 26, 30, 0.8666666666666667, 1.2727272727272727, 0.8248484848484848, 0.9884848484848485, "N2", 1080.0, "Activa", 1200.0], ["41631912-5", "Chattigo", "Carlos Garcia Morales", 1.0, 19, 30, 0.6333333333333333, 2.5, 0.8433333333333333, 1.1933333333333334, "N4", 1560.0, "Activa", 1200.0], ["72194334-3", "Chattigo", "Carlos Garcia Morales", 1.0, 8, 30, 0.26666666666666666, 2.2, 0.5466666666666666, 0.8466666666666667, "N1", 360.0, "Activa", 1200.0], ["47084491-0", "Chattigo", "Maite Peña Valle", 1.0, 12, 30, 0.4, 2.2, 0.73, 0.94, "N2", 1080.0, "Activa", 1200.0], ["72120996-8", "Chattigo", "Maite Peña Valle", 1.0, 20, 30, 0.6666666666666666, 2.5454545454545454, 0.903030303030303, 1.2303030303030302, "N5", 2700.0, "Activa", 1800.0], ["76519658-8", "Chattigo", "Maite Peña Valle", 0.5, 3, 15, 0.2, 1.2, 0.5, 0.5, "No activa", 0.0, "No activa", 600.0], ["75521816-8", "Outbound Premium", "Omar Aguilar Tello", 1.0, 0, 8, 0.0, 1.3333333333333333, 0.19999999999999998, 0.39999999999999997, "No activa", 0.0, "No activa", 1200.0], ["75976175-3", "Outbound Premium", "Omar Aguilar Tello", 1.0, 0, 8, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["43937724-6", "Outbound Premium", "Omar Aguilar Tello", 1.0, 0, 8, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["72792749-8", "Outbound Premium", "Omar Aguilar Tello", 1.0, 0, 8, 0.0, 1.3333333333333333, 0.19999999999999998, 0.39999999999999997, "No activa", 0.0, "No activa", 1200.0], ["75508755-1", "Outbound Premium", "Omar Aguilar Tello", 1.0, 0, 8, 0.0, 1.3333333333333333, 0.19999999999999998, 0.39999999999999997, "No activa", 0.0, "No activa", 1200.0], ["73222140-4", "Outbound Premium", "Omar Aguilar Tello", 1.0, 4, 8, 0.5, 0.3333333333333333, 0.39999999999999997, 0.44999999999999996, "No activa", 0.0, "No activa", 1200.0], ["76014997-2", "Outbound Premium", "Omar Aguilar Tello", 1.0, 4, 8, 0.5, 0.0, 0.35, 0.35, "No activa", 0.0, "No activa", 1200.0], ["76906465-1", "Inbound Premium", "Sheyla Santiago Martel", 1.0, 4, 16, 0.25, 2.5, 0.55, 0.925, "N2", 1080.0, "Activa", 1200.0], ["43618965-1", "Inbound Premium", "Sheyla Santiago Martel", 1.0, 10, 16, 0.625, 1.2, 0.6775, 0.7975, "No activa", 0.0, "Cerca", 1200.0], ["71540442-2", "Inbound Premium", "Sheyla Santiago Martel", 1.0, 9, 16, 0.5625, 1.6, 0.69375, 0.87375, "N1", 360.0, "Activa", 1200.0], ["43953096-6", "Inbound Premium", "Jessica Castillo Palomino", 1.0, 12, 16, 0.75, 1.3333333333333333, 0.7749999999999999, 0.9249999999999998, "N2", 1080.0, "Activa", 1200.0], ["47007242-9", "Inbound Premium", "Sheyla Santiago Martel", 0.75, 12, 12, 1.0, 3.0, 1.0, 1.5999999999999999, "N6", 1800.0, "Activa", 900.0], ["40871164-4", "Inbound Premium", "Sheyla Santiago Martel", 1.0, 16, 16, 1.0, 1.7142857142857142, 0.9571428571428571, 1.2142857142857142, "N5", 1800.0, "Activa", 1200.0], ["45394093-0", "Inbound Premium", "Sheyla Santiago Martel", 1.0, 10, 16, 0.625, 2.0, 0.8875, 1.0375, "N3", 1200.0, "Activa", 1200.0], ["61833558-1", "Inbound Premium", "Sheyla Santiago Martel", 1.0, 6, 16, 0.375, 1.0, 0.4125, 0.5625, "No activa", 0.0, "No activa", 1200.0], ["76277712-1", "Inbound Premium", "Sheyla Santiago Martel", 1.0, 15, 16, 0.9375, 2.0, 0.95625, 1.25625, "N5", 1800.0, "Activa", 1200.0], ["76400858-3", "Inbound Premium", "Sheyla Santiago Martel", 1.0, 0, 16, 0.0, 3.2, 0.48, 0.96, "N2", 1080.0, "Activa", 1200.0], ["78546173-3", "Inbound Regular", "Wiliam Gomez Nicolas", 1.0, 0, 10, 0.0, 1.5, 0.3, 0.44999999999999996, "No activa", 0.0, "No activa", 1200.0], ["61394506-2", "Inbound Regular", "Wiliam Gomez Nicolas", 1.0, 3, 10, 0.3, 1.0, 0.36, 0.51, "No activa", 0.0, "No activa", 1200.0], ["75488447-4", "Inbound Regular", "Wiliam Gomez Nicolas", 1.0, 4, 10, 0.4, 0.5, 0.355, 0.42999999999999994, "No activa", 0.0, "No activa", 1200.0], ["76213406-9", "Inbound Regular", "Wiliam Gomez Nicolas", 1.0, 9, 10, 0.9, 1.0, 0.78, 0.9299999999999999, "N2", 1080.0, "Activa", 1200.0], ["71289815-7", "Inbound Regular", "Wiliam Gomez Nicolas", 1.0, 4, 10, 0.4, 0.5, 0.355, 0.42999999999999994, "No activa", 0.0, "No activa", 1200.0], ["77903145-0", "Inbound Regular", "Wiliam Gomez Nicolas", 1.0, 5, 10, 0.5, 0.5, 0.425, 0.5, "No activa", 0.0, "No activa", 1200.0], ["72721362-2", "Inbound Regular", "Wiliam Gomez Nicolas", 1.0, 0, 10, 0.0, 1.5, 0.22499999999999998, 0.44999999999999996, "No activa", 0.0, "No activa", 1200.0], ["74825745-0", "Inbound Regular", "Wiliam Gomez Nicolas", 0.25, 0, 3, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 300.0], ["45420917-1", "Inbound Regular", "Wiliam Gomez Nicolas", 0.7954545454545454, 0, 8, 0.0, 1.3939393939393938, 0.39999999999999997, 0.41818181818181815, "No activa", 0.0, "No activa", 955.0], ["70302935-9", "Inbound Regular", "Wiliam Gomez Nicolas", 1.0, 0, 10, 0.0, 2.0, 0.36, 0.6, "No activa", 0.0, "No activa", 1200.0], ["75628462-8", "Inbound Regular", "Wiliam Gomez Nicolas", 1.0, 9, 10, 0.9, 0.8, 0.75, 0.87, "N1", 360.0, "Activa", 1200.0], ["46354849-3", "Outbound Regular", "Ylber Bayona Costilla", 1.0, 0, 5, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["41129553-8", "Outbound Regular", "Ylber Bayona Costilla", 0.25, 0, 2, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 300.0], ["42867288-2", "Outbound Regular", "Ylber Bayona Costilla", 1.0, 0, 5, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["75913755-3", "Outbound Regular", "Ylber Bayona Costilla", 1.0, 0, 5, 0.0, 1.0, 0.15, 0.3, "No activa", 0.0, "No activa", 1200.0], ["71009427-1", "Outbound Regular", "Grecia Landivar Perez", 1.0, 0, 5, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["10299889-3", "Ate", "Gerardo Obregon Ruiz", 1.0, 4, 6, 0.6666666666666666, 0.0, 0.4666666666666666, 0.4666666666666666, "No activa", 0.0, "No activa", 1200.0], ["47798730-9", "Ate", "Gerardo Obregon Ruiz", 0.75, 0, 5, 0.0, 0.6666666666666666, 0.19999999999999998, 0.19999999999999998, "No activa", 0.0, "No activa", 900.0], ["47106896-4", "Ate", "Gerardo Obregon Ruiz", 1.0, 0, 6, 0.0, 1.0, 0.15, 0.3, "No activa", 0.0, "No activa", 1200.0], ["72900141-0", "Ate", "Gerardo Obregon Ruiz", 0.5, 0, 3, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 600.0], ["70488249-7", "Ate", "Gerardo Obregon Ruiz", 1.0, 0, 6, 0.0, 0.6666666666666666, 0.09999999999999999, 0.19999999999999998, "No activa", 0.0, "No activa", 1200.0], ["77575311-6", "Ate", "Gerardo Obregon Ruiz", 1.0, 0, 6, 0.0, 1.0, 0.15, 0.3, "No activa", 0.0, "No activa", 1200.0], ["48990227-9", "Ate", "Gerardo Obregon Ruiz", 1.0, 4, 6, 0.6666666666666666, 0.0, 0.4666666666666666, 0.4666666666666666, "No activa", 0.0, "No activa", 1200.0], ["41138380-1", "Ate", "Gerardo Obregon Ruiz", 1.0, 4, 6, 0.6666666666666666, 0.0, 0.4666666666666666, 0.4666666666666666, "No activa", 0.0, "No activa", 1200.0], ["49010120-4", "Ate", "Gerardo Obregon Ruiz", 1.0, 9, 6, 1.5, 0.0, 1.0499999999999998, 1.0499999999999998, "N3", 1200.0, "Activa", 1200.0], ["48142442-4", "Ate", "Gerardo Obregon Ruiz", 1.0, 0, 6, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["72929459-0", "Ate", "Gerardo Obregon Ruiz", 1.0, 0, 6, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["46255790-1", "Outbound Premium", "Henrry Jhonathan Pompa Eugenio", 1.0, 10, 8, 1.25, 0.0, 0.875, 0.875, "N1", 360.0, "Activa", 1200.0], ["71785004-7", "Outbound Premium", "Henrry Jhonathan Pompa Eugenio", 1.0, 19, 8, 2.375, 0.6666666666666666, 1.7625, 1.8624999999999998, "N6", 2400.0, "Activa", 1200.0], ["71031096-9", "Outbound Premium", "Henrry Jhonathan Pompa Eugenio", 0.75, 0, 6, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 900.0], ["41726333-6", "Outbound Premium", "Henrry Jhonathan Pompa Eugenio", 1.0, 0, 8, 0.0, 0.5, 0.075, 0.15, "No activa", 0.0, "No activa", 1200.0], ["76934229-5", "Outbound Premium", "Henrry Jhonathan Pompa Eugenio", 1.0, 4, 8, 0.5, 0.0, 0.35, 0.35, "No activa", 0.0, "No activa", 1200.0], ["47338127-9", "Outbound Premium", "Henrry Jhonathan Pompa Eugenio", 1.0, 0, 8, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["77491421-3", "Outbound Premium", "Henrry Jhonathan Pompa Eugenio", 1.0, 9, 8, 1.125, 0.0, 0.7875, 0.7875, "No activa", 0.0, "Cerca", 1200.0], ["72447633-9", "Outbound Premium", "Henrry Jhonathan Pompa Eugenio", 0.5, 3, 4, 0.75, 0.0, 0.5249999999999999, 0.5249999999999999, "No activa", 0.0, "No activa", 600.0], ["60500525-5", "Outbound Premium", "Henrry Jhonathan Pompa Eugenio", 1.0, 0, 5, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["75065040-1", "Outbound Premium", "Henrry Jhonathan Pompa Eugenio", 1.0, 0, 5, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["74219240-2", "Outbound Premium", "Henrry Jhonathan Pompa Eugenio", 1.0, 15, 5, 3.0, 0.0, 2.0999999999999996, 2.0999999999999996, "N6", 2400.0, "Activa", 1200.0], ["47583548-0", "Outbound Premium", "Henrry Jhonathan Pompa Eugenio", 1.0, 4, 5, 0.8, 0.0, 0.5599999999999999, 0.5599999999999999, "No activa", 0.0, "No activa", 1200.0], ["73900945-1", "Inbound Premium", "Samantha Aliaga Zurita", 1.0, 4, 16, 0.25, 0.8, 0.295, 0.415, "No activa", 0.0, "No activa", 1800.0], ["70662167-4", "Inbound Premium", "Samantha Aliaga Zurita", 1.0, 1, 16, 0.0625, 0.6666666666666666, 0.14375, 0.24374999999999997, "No activa", 0.0, "No activa", 1200.0], ["73600985-0", "Inbound Premium", "Samantha Aliaga Zurita", 1.0, 10, 16, 0.625, 1.3333333333333333, 0.6375, 0.8374999999999999, "N1", 360.0, "Activa", 1200.0], ["43020786-1", "Inbound Premium", "Samantha Aliaga Zurita", 1.0, 0, 16, 0.0, 1.3333333333333333, 0.19999999999999998, 0.39999999999999997, "No activa", 0.0, "No activa", 1800.0], ["73440107-8", "Inbound Premium", "Samantha Aliaga Zurita", 1.0, 12, 16, 0.75, 1.6666666666666667, 0.7749999999999999, 1.025, "N3", 1200.0, "Activa", 1200.0], ["73221708-3", "Inbound Premium", "Samantha Aliaga Zurita", 1.0, 12, 16, 0.75, 0.4166666666666667, 0.6249999999999999, 0.6499999999999999, "No activa", 0.0, "No activa", 1800.0], ["70181782-1", "Inbound Premium", "Samantha Aliaga Zurita", 1.0, 0, 16, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["72654814-1", "Inbound Premium", "Samantha Aliaga Zurita", 0.5, 2, 8, 0.25, 1.3333333333333333, 0.575, 0.575, "No activa", 0.0, "No activa", 600.0], ["72003477-3", "Inbound Premium", "Samantha Aliaga Zurita", 0.75, 3, 12, 0.25, 1.875, 0.625, 0.7375, "No activa", 0.0, "Cerca", 900.0], ["47309641-8", "Inbound Regular", "Samantha Aliaga Zurita", 1.0, 4, 10, 0.4, 1.0, 0.42999999999999994, 0.58, "No activa", 0.0, "No activa", 1200.0], ["61866020-1", "Inbound Regular", "Samantha Aliaga Zurita", 1.0, 3, 10, 0.3, 0.5, 0.285, 0.36, "No activa", 0.0, "No activa", 1200.0], ["76958319-5", "Inbound Regular", "Samantha Aliaga Zurita", 1.0, 3, 10, 0.3, 0.75, 0.43499999999999994, 0.43499999999999994, "No activa", 0.0, "No activa", 1200.0], ["47839802-1", "Inbound Regular", "Samantha Aliaga Zurita", 1.0, 0, 10, 0.0, 0.625, 0.15, 0.1875, "No activa", 0.0, "No activa", 1200.0], ["74653422-7", "Inbound Regular", "Samantha Aliaga Zurita", 0.5, 0, 5, 0.0, 0.3333333333333333, 0.09999999999999999, 0.09999999999999999, "No activa", 0.0, "No activa", 600.0], ["71818874-7", "Counter", "Zully Marin Tello", 0.5, 16, 11, 1.4545454545454546, 0.4, 1.1381818181818182, 1.1381818181818182, "N4", 780.0, "Activa", 600.0], ["72696904-9", "Counter", "Zully Marin Tello", 1.0, 42, 22, 1.9090909090909092, 0.2222222222222222, 1.3696969696969699, 1.403030303030303, "N6", 2400.0, "Activa", 1200.0], ["72215938-7", "Counter", "Zully Marin Tello", 1.0, 47, 22, 2.1363636363636362, 0.6666666666666666, 1.5954545454545455, 1.6954545454545453, "N6", 3600.0, "Activa", 1800.0], ["77062441-5", "Counter", "Zully Marin Tello", 1.0, 55, 22, 2.5, 0.5, 1.825, 1.9, "N6", 2400.0, "Activa", 1200.0], ["47292898-3", "Counter", "Zully Marin Tello", 0.5, 12, 11, 1.0909090909090908, 0.25, 0.8386363636363635, 0.8386363636363635, "N1", 180.0, "Activa", 600.0], ["71975516-5", "Outbound Regular", "Zully Marin Tello", 1.0, 5, 5, 1.0, 1.0, 0.85, 1.0, "N3", 1200.0, "Activa", 1200.0], ["47372798-1", "Outbound Regular", "Zully Marin Tello", 1.0, 0, 5, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["72315053-7", "Outbound Regular", "Zully Marin Tello", 0.5, 4, 3, 1.3333333333333333, 0.0, 0.9333333333333332, 0.9333333333333332, "N2", 540.0, "Activa", 600.0], ["76267407-1", "Inbound Premium", "Ana Cecilia Leon Chacon", 0.25, 0, 4, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 300.0], ["48081181-5", "Inbound Premium", "Ana Cecilia Leon Chacon", 0.5, 0, 8, 0.0, 1.3333333333333333, 0.39999999999999997, 0.39999999999999997, "No activa", 0.0, "No activa", 600.0], ["73527127-5", "Inbound Premium", "Ana Cecilia Leon Chacon", 0.5, 3, 8, 0.375, 0.3333333333333333, 0.36249999999999993, 0.36249999999999993, "No activa", 0.0, "No activa", 600.0], ["48305614-7", "Inbound Premium", "Ana Cecilia Leon Chacon", 0.5, 7, 8, 0.875, 1.5, 1.0625, 1.0625, "N3", 600.0, "Activa", 600.0], ["70854691-2", "Inbound Premium", "Ana Cecilia Leon Chacon", 0.45454545454545453, 1, 7, 0.14285714285714285, 3.03030303030303, 0.6, 1.009090909090909, "N3", 545.0, "Activa", 545.0], ["73661366-8", "Inbound Regular", "Ana Cecilia Leon Chacon", 1.0, 4, 10, 0.4, 4.0, 0.8799999999999999, 1.48, "N6", 2400.0, "Activa", 1200.0], ["70801843-6", "Outbound Premium", "Veronica Santillan Salazar", 0.5, 0, 4, 0.0, 0.3333333333333333, 0.09999999999999999, 0.09999999999999999, "No activa", 0.0, "No activa", 600.0], ["44239347-3", "Inbound Regular", "Ana Cecilia Leon Chacon", 0.5, 1, 5, 0.2, 2.0, 0.74, 0.74, "No activa", 0.0, "Cerca", 600.0], ["48146819-7", "Inbound Regular", "Ana Cecilia Leon Chacon", 0.75, 5, 8, 0.625, 0.0, 0.4375, 0.4375, "No activa", 0.0, "No activa", 900.0], ["47437021-1", "Inbound Regular", "Ana Cecilia Leon Chacon", 0.5, 0, 5, 0.0, 0.5, 0.15, 0.15, "No activa", 0.0, "No activa", 600.0], ["71058651-4", "Inbound Regular", "Ana Cecilia Leon Chacon", 1.0, 0, 10, 0.0, 1.2, 0.18, 0.36, "No activa", 0.0, "No activa", 1200.0], ["71210169-1", "Inbound Regular", "Ana Cecilia Leon Chacon", 1.0, 4, 10, 0.4, 1.0, 0.42999999999999994, 0.58, "No activa", 0.0, "No activa", 1200.0], ["47464085-5", "Inbound Regular", "Ana Cecilia Leon Chacon", 0.5, 1, 5, 0.2, 1.0, 0.43999999999999995, 0.43999999999999995, "No activa", 0.0, "No activa", 600.0], ["74983088-9", "Inbound Regular", "Ana Cecilia Leon Chacon", 0.5, 0, 5, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 600.0], ["70039014-0", "Inbound Regular", "Ana Cecilia Leon Chacon", 0.5, 2, 5, 0.4, 2.3333333333333335, 0.98, 0.98, "N2", 540.0, "Activa", 600.0], ["42040059-0", "Counter", "Delia Leon Ruidias", 1.0, 12, 14, 0.8571428571428571, 0.0, 0.6, 0.6, "No activa", 0.0, "No activa", 1200.0], ["60768630-6", "Counter", "Delia Leon Ruidias", 0.75, 19, 11, 1.7272727272727273, 0.0, 1.209090909090909, 1.209090909090909, "N5", 1350.0, "Activa", 900.0], ["72402384-9", "Counter", "Delia Leon Ruidias", 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 0.0], ["70682386-2", "Counter", "Delia Leon Ruidias", 0.75, 0, 11, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 845.0], ["72235485-6", "Counter", "Delia Leon Ruidias", 1.0, 16, 14, 1.1428571428571428, 0.8, 0.9199999999999999, 1.04, "N3", 1200.0, "Activa", 1200.0], ["70525424-4", "Counter", "Delia Leon Ruidias", 0.75, 4, 11, 0.36363636363636365, 0.0, 0.2545454545454545, 0.2545454545454545, "No activa", 0.0, "No activa", 1200.0], ["74959602-9", "Outbound Regular", "Delia Leon Ruidias", 1.0, 0, 5, 0.0, 2.0, 0.3, 0.6, "No activa", 0.0, "No activa", 1200.0], ["46457519-2", "Outbound Regular", "Juan Castillo Correa", 1.0, 0, 5, 0.0, 3.0, 0.44999999999999996, 0.8999999999999999, "N2", 1080.0, "Activa", 1200.0], ["70376259-5", "Outbound Regular", "Juan Castillo Correa", 0.5, 0, 3, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 600.0], ["71949107-9", "Outbound Regular", "Juan Castillo Correa", 1.0, 0, 5, 0.0, 1.0, 0.15, 0.3, "No activa", 0.0, "No activa", 1200.0], ["76713959-0", "Outbound Regular", "Juan Castillo Correa", 1.0, 0, 5, 0.0, 0.5, 0.15, 0.15, "No activa", 0.0, "No activa", 1200.0], ["71028809-2", "Outbound Regular", "Juan Castillo Correa", 1.0, 0, 4, 0.0, 2.5, 0.6, 0.75, "No activa", 0.0, "Cerca", 1200.0], ["73739736-5", "Outbound Regular", "Juan Castillo Correa", 1.0, 0, 4, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["71466657-1", "Outbound Regular", "Juan Castillo Correa", 1.0, 0, 4, 0.0, 1.0, 0.15, 0.3, "No activa", 0.0, "No activa", 1200.0], ["72503204-3", "Outbound Regular", "Juan Castillo Correa", 1.0, 0, 4, 0.0, 4.0, 0.6, 1.2, "N5", 1800.0, "Activa", 1200.0], ["77299580-1", "Outbound Premium", "Veronica Santillan Salazar", 1.0, 0, 5, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["71514916-3", "Outbound Regular", "Juan Castillo Correa", 0.5, 0, 3, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 600.0], ["70323823-3", "Outbound Regular", "Juan Castillo Correa", 0.5, 0, 3, 0.0, 0.5, 0.15, 0.15, "No activa", 0.0, "No activa", 600.0], ["76665198-0", "Outbound Regular", "Juan Castillo Correa", 1.0, 0, 5, 0.0, 1.0, 0.15, 0.3, "No activa", 0.0, "No activa", 1200.0], ["75143635-7", "Outbound Regular", "Juan Castillo Correa", 1.0, 4, 5, 0.8, 3.0, 1.0099999999999998, 1.46, "N6", 2400.0, "Activa", 1200.0], ["73790666-9", "Outbound Regular", "Delia Leon Ruidias", 1.0, 1, 5, 0.2, 0.5, 0.29, 0.29, "No activa", 0.0, "No activa", 1200.0], ["74367446-0", "Outbound Premium", "Veronica Santillan Salazar", 1.0, 3, 8, 0.375, 0.6666666666666666, 0.36249999999999993, 0.4624999999999999, "No activa", 0.0, "No activa", 1200.0], ["70459326-6", "Inbound Regular", "Ana Cecilia Leon Chacon", 1.0, 0, 10, 0.0, 3.0, 0.525, 0.8999999999999999, "N2", 1080.0, "Activa", 1200.0], ["70285792-4", "Outbound Premium", "Veronica Santillan Salazar", 0.5, 0, 4, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 600.0], ["48077403-1", "Outbound Premium", "Veronica Santillan Salazar", 1.0, 4, 8, 0.5, 0.0, 0.35, 0.35, "No activa", 0.0, "No activa", 1200.0], ["46731674-1", "Outbound Premium", "Veronica Santillan Salazar", 0.75, 3, 6, 0.5, 0.0, 0.35, 0.35, "No activa", 0.0, "No activa", 900.0], ["43460030-3", "Outbound Premium", "Veronica Santillan Salazar", 1.0, 7, 8, 0.875, 0.0, 0.6124999999999999, 0.6124999999999999, "No activa", 0.0, "No activa", 1200.0], ["70778165-9", "Outbound Premium", "Veronica Santillan Salazar", 1.0, 0, 8, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["72329577-2", "Outbound Premium", "Veronica Santillan Salazar", 1.0, 0, 8, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["74160702-1", "Outbound Premium", "Veronica Santillan Salazar", 1.0, 0, 8, 0.0, 0.6666666666666666, 0.09999999999999999, 0.19999999999999998, "No activa", 0.0, "No activa", 1200.0], ["70902325-5", "Outbound Premium", "Veronica Santillan Salazar", 0.5, 2, 4, 0.5, 0.0, 0.35, 0.35, "No activa", 0.0, "No activa", 600.0], ["41514162-4", "Outbound Premium", "Veronica Santillan Salazar", 0.5, 3, 4, 0.75, 0.0, 0.5249999999999999, 0.5249999999999999, "No activa", 0.0, "No activa", 600.0], ["76449200-1", "Outbound Premium", "Veronica Santillan Salazar", 1.0, 15, 8, 1.875, 0.0, 1.3125, 1.3125, "N6", 2400.0, "Activa", 1200.0], ["45021034-5", "Outbound Premium", "Veronica Santillan Salazar", 1.0, 0, 8, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 1200.0], ["73782028-4", "Lima Sur", "Liliana Sejo Suarez", 0.0, 4, 5, 0.8, 0.0, 0.5599999999999999, 0.5599999999999999, "No activa", 0.0, "No activa", 0.0], ["48036149-6", "Lima Sur", "Liliana Sejo Suarez", 0.0, 0, 5, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 0.0], ["76494409-2", "Lima Sur", "Liliana Sejo Suarez", 0.0, 4, 5, 0.8, 0.0, 0.5599999999999999, 0.5599999999999999, "No activa", 0.0, "No activa", 0.0], ["75686214-1", "Lima Sur", "Liliana Sejo Suarez", 0.0, 12, 5, 2.4, 0.0, 1.68, 1.68, "N6", 0.0, "Activa", 0.0], ["46385234-6", "Lima Sur", "Liliana Sejo Suarez", 0.0, 0, 2, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 0.0], ["72505244-3", "Lima Sur", "Maritza Huaman Navarro", 0.0, 9, 5, 1.8, 0.0, 1.26, 1.26, "N5", 0.0, "Activa", 0.0], ["70067394-0", "Lima Sur", "Maritza Huaman Navarro", 0.0, 0, 5, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 0.0], ["75841750-1", "Lima Sur", "Maritza Huaman Navarro", 0.0, 0, 5, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 0.0], ["76199458-7", "Lima Sur", "Maritza Huaman Navarro", 0.0, 4, 5, 0.8, 0.0, 0.5599999999999999, 0.5599999999999999, "No activa", 0.0, "No activa", 0.0], ["76656036-4", "Lima Sur", "Nino Bellido Valenzuela", 0.0, 0, 8, 0.0, 0.5, 0.075, 0.15, "No activa", 0.0, "No activa", 0.0], ["75628851-8", "Lima Sur", "Nino Bellido Valenzuela", 0.0, 12, 8, 1.5, 0.0, 1.0499999999999998, 1.0499999999999998, "N3", 0.0, "Activa", 0.0], ["48205433-7", "Lima Sur", "Nino Bellido Valenzuela", 0.0, 2, 4, 0.5, 0.5, 0.5, 0.5, "No activa", 0.0, "No activa", 0.0], ["48510663-0", "Lima Sur", "Nino Bellido Valenzuela", 0.0, 4, 8, 0.5, 0.5, 0.425, 0.5, "No activa", 0.0, "No activa", 0.0], ["76177341-6", "Lima Sur", "Nino Bellido Valenzuela", 0.0, 3, 4, 0.75, 1.0, 0.6749999999999999, 0.825, "N1", 0.0, "Activa", 0.0], ["48409758-1", "Lima Sur", "Nino Bellido Valenzuela", 0.0, 8, 8, 1.0, 0.4, 0.76, 0.82, "N1", 0.0, "Activa", 0.0], ["48007648-1", "Lima Sur", "Nino Bellido Valenzuela", 0.0, 4, 8, 0.5, 0.0, 0.35, 0.35, "No activa", 0.0, "No activa", 0.0], ["45315468-3", "Lima Sur", "Nino Bellido Valenzuela", 0.0, 3, 8, 0.375, 0.0, 0.26249999999999996, 0.26249999999999996, "No activa", 0.0, "No activa", 0.0], ["46138595-3", "Lima Sur", "Nino Bellido Valenzuela", 0.0, 5, 8, 0.625, 1.0, 0.5875, 0.7375, "No activa", 0.0, "Cerca", 0.0], ["48045946-1", "Lima Sur", "Nino Bellido Valenzuela", 0.0, 9, 8, 1.125, 0.0, 0.7875, 0.7875, "No activa", 0.0, "Cerca", 0.0], ["76777570-4", "Lima Sur", "Nino Bellido Valenzuela", 0.0, 7, 8, 0.875, 0.0, 0.6124999999999999, 0.6124999999999999, "No activa", 0.0, "No activa", 0.0], ["71833088-8", "Lima Sur", "Nino Bellido Valenzuela", 0.0, 0, 7, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 0.0], ["74430078-4", "Lima Sur", "Nino Bellido Valenzuela", 0.0, 4, 8, 0.5, 1.2, 0.53, 0.71, "No activa", 0.0, "Cerca", 0.0], ["70732649-8", "Lima Sur", "Nino Bellido Valenzuela", 0.0, 3, 8, 0.375, 0.0, 0.26249999999999996, 0.26249999999999996, "No activa", 0.0, "No activa", 0.0], ["73234438-7", "Lima Sur", "Liliana Sejo Suarez", 0.0, 4, 3, 1.3333333333333333, 0.0, 0.9333333333333332, 0.9333333333333332, "N2", 0.0, "Activa", 0.0], ["76655978-1", "Lima Sur", "Liliana Sejo Suarez", 0.0, 0, 3, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 0.0], ["46681438-1", "Lima Sur", "Maritza Huaman Navarro", 0.0, 0, 3, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 0.0], ["07524372-9", "Lima Sur", "Maritza Huaman Navarro", 0.0, 3, 3, 1.0, 0.0, 0.7, 0.7, "No activa", 0.0, "Cerca", 0.0], ["48768139-9", "Lima Sur", "Maritza Huaman Navarro", 0.0, 0, 3, 0.0, 0.0, 0.0, 0.0, "No activa", 0.0, "No activa", 0.0]];
+const fPool=document.getElementById("fPool"), fEst=document.getElementById("fEst"), fTxt=document.getElementById("fTxt");
+[...new Set(A.map(r=>r[1]))].sort().forEach(p=>fPool.insertAdjacentHTML("beforeend",`<option>${p}</option>`));
+let sortK=9, sortDir=-1;
+const tag=e=>`<span class="tag ${e==="Activa"?"t-ok":e==="Cerca"?"t-warn":"t-no"}">${e==="Activa"?"Activa":e==="Cerca"?"Cerca":"No activa"}</span>`;
+const bar=v=>`<span class="mini"><span style="width:${Math.min(v,1.3)/1.3*100}%;background:${col(v)}"></span></span>`;
+const fFac=document.getElementById("fFac");
+const LEVELS=[[1.3,"N6",2],[1.2,"N5",1.5],[1.1,"N4",1.3],[1,"N3",1],[.9,"N2",.9],[.8,"N1",.3]];
+const lvl=c=>LEVELS.find(l=>c>=l[0]-1e-9)||[0,"No activa",0];
+function getFac(){const v=parseFloat(String(fFac.value).replace(",","."));return isFinite(v)&&v>0?Math.min(Math.max(v,.5),3):1}
+function adjusted(f){
+  if(Math.abs(f-1)<1e-9) return A;
+  return A.map(r=>{
+    const pm=r[6]*f, c=.7*pm+.3*r[7], L=lvl(c);
+    const est=c>=.8-1e-9?"Activa":c>=.7-1e-9?"Cerca":"No activa";
+    const o=r.slice(); o[6]=pm; o[9]=c; o[10]=L[1]; o[11]=L[2]*r[13]; o[12]=est; return o;
+  });
+}
+const BASE={act:A.filter(r=>r[12]==="Activa").length, g:A.reduce((s,r)=>s+r[11],0)};
+function render(){
+  const t=fTxt.value.trim().toLowerCase();
+  const f=getFac(), D=adjusted(f);
+  const note=document.getElementById("facnote");
+  if(Math.abs(f-1)<1e-9){
+    note.className="facnote";
+    note.innerHTML="Con factor 1 se usa la venta PM real. Súbelo para simular un mayor cierre de PM (por ejemplo, 1.2 = 20% más venta PM por asesor).";
+  } else {
+    const act=D.filter(r=>r[12]==="Activa").length, g=D.reduce((s,r)=>s+r[11],0), dg=g-BASE.g;
+    note.className="facnote on";
+    note.innerHTML=`Simulación con factor <b>${f.toFixed(2)}</b> sobre la venta PM: activan <b>${act}</b> de 263 (base ${BASE.act}) y el gasto sería <b>S/ ${num(g)}</b>, ${dg>=0?"+":"−"}S/ ${num(Math.abs(dg))} frente a la base de S/ ${num(BASE.g)}. El resto de la página muestra la base sin factor.`;
+  }
+  document.querySelector('#det th button[data-k="6"]').textContent=Math.abs(f-1)<1e-9?"% PM":"% PM × "+f.toFixed(2);
+  let rows=D.filter(r=>(!fPool.value||r[1]===fPool.value)&&(!fEst.value||r[12]===fEst.value)&&(!t||r[0].toLowerCase().includes(t)||r[2].toLowerCase().includes(t)));
+  rows.sort((a,b)=>{const u=a[sortK],v=b[sortK];return (typeof u==="number"?u-v:String(u).localeCompare(String(v)))*sortDir});
+  document.querySelector("#det tbody").innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td class="n">${pct(r[6])}</td><td class="n">${pct(r[7])}</td><td class="n">${bar(r[9])}<b>${pct(r[9])}</b></td><td>${r[10]}</td><td class="n">${r[11]?num(r[11]):"—"}</td><td>${tag(r[12])}</td></tr>`).join("")||`<tr><td colspan="9">No hay asesores con esos filtros. Cambia el pool o el estado.</td></tr>`;
+  const act=rows.filter(r=>r[12]==="Activa").length, g=rows.reduce((s,r)=>s+r[11],0);
+  document.getElementById("summary").innerHTML=`<b>${rows.length}</b> asesores · <b>${act}</b> activan · gasto <b>S/ ${num(g)}</b>`;
+}
+document.querySelectorAll("#det th button").forEach(b=>b.addEventListener("click",()=>{
+  const k=+b.dataset.k; if(k===sortK) sortDir*=-1; else {sortK=k; sortDir=(k>=6&&k!==10&&k!==12)?-1:1;}
+  document.querySelectorAll("#det th button").forEach(o=>o.removeAttribute("aria-sort"));
+  b.setAttribute("aria-sort",sortDir<0?"descending":"ascending"); render();
+}));
+[fPool,fEst].forEach(e=>e.addEventListener("change",render)); fTxt.addEventListener("input",render);
+fFac.addEventListener("input",render);
+fFac.addEventListener("change",()=>{fFac.value=getFac().toFixed(2);render()});
+const step=d=>{fFac.value=Math.min(Math.max(Math.round((getFac()+d)*100)/100,.5),3).toFixed(2);render()};
+document.getElementById("fMinus").addEventListener("click",()=>step(-.05));
+document.getElementById("fPlus").addEventListener("click",()=>step(.05));
+render();
+</script>
+</body>
+</html>
