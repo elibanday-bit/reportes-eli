@@ -5,6 +5,14 @@ Reporte de estatus de ventas y comisiones de asesores (periodo S37–S40) para p
 Responde cuatro preguntas: cómo vamos por pool, cuánto se proyecta, quiénes activan comisión y cuánto se proyecta en gasto. También identifica qué pool tiene más desfase.
 El usuario trabaja en español y prefiere ver los entregables como **página web**, no en Excel.
 
+## Contexto del negocio (contado por el usuario, 7 oct.)
+- Producción de asesores de venta por pool. Jerarquía: **IN** (Chattigo, Inbound Premium, Inbound Regular), **Counter** (Counter), **OUT** (Outbound Premium, Outbound Regular, Ate), **ReiNew** y **Lima Sur**.
+- Se mide por **PM** (prematrículas) y **CM** (confirmaciones de matrícula).
+- La venta es diaria. El mes comercial dura 4 o 5 semanas (lunes a domingo): termina el domingo en que cae el último día del mes, o el primer domingo del mes siguiente. Ej.: setiembre 2026 = S37–S40 (7 set.–4 oct.); octubre 2026 = S41–S44 (5 oct.–1 nov.), pendiente de confirmar.
+- Productos: setiembre fue mixto (campaña 27.1 + módulo B). Octubre: 100% campaña 27.1, salvo los equipos PA, que tienen módulo B y campaña 27.1.
+- El director pregunta "¿cómo estamos?": avance contra meta a nivel total, por pool y dotación; ventas semanales y su pico; oportunidad; proyección de cierre; quiénes activan y cuánto se proyecta en el mes.
+- El usuario va a ir pasando iniciativas para reestructurar el reporte en partes.
+
 ## Estructura
 - `data/ANALISIS_ESTADO-PROYECCION.xlsx`: base original. Tiene la hoja `base` (263 asesores) y la hoja `tablas` (niveles y aceleradores).
 - `scripts/build_web.py`: calcula todo con pandas y genera `output/estatus-comisiones-s37-s40.html`. **Es el flujo principal.**
